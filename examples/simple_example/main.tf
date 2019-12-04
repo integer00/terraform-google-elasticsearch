@@ -22,5 +22,5 @@ module "elasticsearch" {
   source = "../../"
 
   project_id = var.project_id
-
+  es_vm_count = var.es_vm_count
 }

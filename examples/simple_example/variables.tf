@@ -19,3 +19,6 @@ variable "project_id" {
   type        = string
 }
 
+variable "es_vm_count" {
+ default = 2
+}

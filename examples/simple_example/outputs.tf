@@ -14,3 +14,16 @@
  * limitations under the License.
  */
 
+//output "es_external_ip" {
+//  value = module.elasticsearch.elasticsearch_external_ip[*]
+//}
+//output "es_name" {
+//  value = module.elasticsearch.elasticsearch_vm_name[*]
+//}
+
+output "combined" {
+  value = {
+    name = module.elasticsearch.elasticsearch_vm_name,
+    ip = module.elasticsearch.elasticsearch_external_ip
+  }
+}

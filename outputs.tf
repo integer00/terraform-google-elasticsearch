@@ -15,5 +15,8 @@
  */
 
 output "elasticsearch_external_ip" {
-  value = google_compute_instance.elasticsearch_vm[0].network_interface[0].access_config[0].nat_ip
+  value = google_compute_instance.elasticsearch_vm[*].network_interface[0].access_config[0].nat_ip
+}
+output "elasticsearch_vm_name" {
+  value = google_compute_instance.elasticsearch_vm[*].name
 }

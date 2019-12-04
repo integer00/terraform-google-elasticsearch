@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-## add config json
-
-
 locals {
   local_es_metadata = {
+    startup-script = data.template_file.init_es.rendered
+
+    es_config = data.template_file.es_config.rendered
   }
   local_es_tags     = ["elastic-external"]
+
 }
 
-
-data "template_file" "init_redis" {
+data "template_file" "init_es" {
   template = file("${path.module}/templates/init_elasticsearch.tpl")
+}
+
+//resource "random_uuid" "shuff" {
+// count = var.es_vm_count
+//
+//}
+
+data "template_file" "es_config" {
+
+  template = file("${path.module}/templates/elasticsearch.json.tpl")
 
   vars = {
-
+    initial_master_ip = google_compute_address.elasticsearch_vm_internal_address[0].address
+    internal_ip = join(", " , google_compute_address.elasticsearch_vm_internal_address[*].address)
   }
 }
 
@@ -61,7 +72,6 @@ resource "google_compute_instance" "elasticsearch_vm" {
     local.local_es_tags,
     var.es_tags
   )
-
 
   allow_stopping_for_update = "false"
 
@@ -123,7 +133,7 @@ resource "google_compute_firewall" "vm_elastic_allow_external" {
 
   allow {
     protocol = "tcp"
-    ports    = ["9200"]
+    ports    = ["9200","9300"]
   }
 
   source_tags = ["elastic-external"]

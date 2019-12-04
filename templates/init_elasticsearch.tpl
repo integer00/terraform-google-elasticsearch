@@ -1,10 +1,17 @@
+#!/usr/bin/env sh
+#Elasticsearch bootstrap script
+
+set -e
 
 check_java_version() {
-  yum install java-latest-openjdk
+  yum -q -y install java-latest-openjdk
 #register version
 
+}
+
 install_elasticsearch() {
-  rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
 cat <<EOF > /etc/yum.repos.d/elasticsearch.repo
 [elasticsearch-7.x]
@@ -16,18 +23,29 @@ enabled=1
 autorefresh=1
 type=rpm-md
 EOF
-}
-yum install elasticsearch
 
-systemctl daemon-reload
-systemctl enable elasticsearch.service
+
+yum -q -y install elasticsearch
+
+systemctl -q daemon-reload
+systemctl -q enable elasticsearch.service
 
 }
+
 check_installation() {
 
+echo "get meta"
+curl -s -H "Metadata-Flavor: Google" http://metadata.google.internal/computeMetadata/v1/instance/attributes/es_config -o /etc/elasticsearch/elasticsearch.yml
 
 }
 
+start_es(){
+  systemctl -q start elasticsearch.service
+}
 
 check_java_version
+install_elasticsearch
 check_installation
+start_es
+
+echo "done"
