@@ -23,4 +23,6 @@ module "elasticsearch" {
 
   project_id = var.project_id
   es_vm_count = var.es_vm_count
+  es_instance_name = var.es_instance_name
+
 }

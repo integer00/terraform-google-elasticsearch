@@ -59,3 +59,11 @@ variable "es_instance_image" {
 variable "es_instance_region" {
   default = "europe-west2"
 }
+variable "es_heap_size" {
+  description = "The heapsize of jvm"
+  default = "1g"
+}
+variable "es_cluster_name" {
+  description = "A name for cluster"
+  default = "elastic-cluster"
+}

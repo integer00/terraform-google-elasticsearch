@@ -19,6 +19,6 @@ variable "project_id" {
   type        = string
 }
 
-variable "es_instance_name" {
-  default = "fixture_simple_vm"
+variable "es_vm_count" {
+ default = 2
 }

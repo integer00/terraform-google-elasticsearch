@@ -22,3 +22,7 @@ variable "project_id" {
 variable "es_vm_count" {
  default = 2
 }
+
+variable "es_instance_name" {
+  default = "elasticsearch-vm-node"
+}

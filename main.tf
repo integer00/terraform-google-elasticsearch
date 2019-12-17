@@ -19,6 +19,9 @@ locals {
     startup-script = data.template_file.init_es.rendered
 
     es_config = data.template_file.es_config.rendered
+    es_jvm_options = data.template_file.jvm_options.rendered
+
+
   }
   local_es_tags     = ["elastic-external"]
 
@@ -40,6 +43,16 @@ data "template_file" "es_config" {
   vars = {
     initial_master_ip = google_compute_address.elasticsearch_vm_internal_address[0].address
     internal_ip = join(", " , google_compute_address.elasticsearch_vm_internal_address[*].address)
+    cluster_name = var.es_cluster_name
+
+  }
+}
+
+data "template_file" "jvm_options" {
+  template = file("${path.module}/templates/jvm.options.tpl")
+
+  vars = {
+    heap_size = var.es_heap_size
   }
 }
 
@@ -54,13 +67,7 @@ data "google_compute_subnetwork" "data_subnetwork" {
   region  = var.es_instance_region
 }
 
-//resource "null_resource" "wait_for_es" {
-//  provisioner "local-exec" {
-//    command = "${path.module}/scripts/wait-for-elasticsearch.sh ${var.project_id} ${var.es_instance_zone} ${var.es_instance_name}"
-//  }
-//
-//  depends_on = [google_compute_instance.elasticsearch_vm]
-//}
+
 
 resource "google_compute_instance" "elasticsearch_vm" {
   project      = var.project_id

@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The ID of the project in which to provision resources."
-  type        = string
-}
+//output "es_external_ip" {
+//  value = module.elasticsearch.elasticsearch_external_ip[*]
+//}
+//output "es_name" {
+//  value = module.elasticsearch.elasticsearch_vm_name[*]
+//}
 
-variable "es_instance_name" {
-  default = "fixture_simple_vm"
+output "combined" {
+  value = {
+    name = module.elasticsearch.elasticsearch_vm_name,
+    ip = module.elasticsearch.elasticsearch_external_ip
+  }
 }

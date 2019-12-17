@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The ID of the project in which to provision resources."
-  type        = string
-}
+module "example" {
+  source = "../../../examples/cluster_example"
 
-variable "es_instance_name" {
-  default = "fixture_simple_vm"
+  project_id  = var.project_id
 }

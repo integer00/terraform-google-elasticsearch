@@ -18,4 +18,5 @@ module "example" {
   source = "../../../examples/simple_example"
 
   project_id  = var.project_id
+  es_instance_name = var.es_instance_name
 }
